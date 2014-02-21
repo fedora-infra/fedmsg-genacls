@@ -1,14 +1,21 @@
-fedmsg-koji-consumer
-====================
+fedmsg-genacls
+==============
 
-An example of using `fedmsg <http://fedmsg.com>`_ to monitor `koji <http://koji.fedoraproject.org>`_, the `Fedora <http://fedoraproject.org>`_ Build System.
+An example of using `fedmsg <http://fedmsg.com>`_ to monitor `pkgdb
+<https://admin.fedoraproject.org/pkgdb>`_ for messages, but delaying
+action for a few seconds to accumulate messages and avoid pile-up.
 
 Running
 -------
 
 .. code-block:: bash
 
-   sudo yum install fedmsg-hub
-   sudo cp config.py /etc/fedmsg.d/kojiconsumer.py
-   python setup.py egg_info
-   PYTHONPATH=$(pwd) fedmsg-hub
+    # Install virtualenvwrapper and restart you terminal
+    sudo yum install python-virtualenvwrapper
+
+    # In a new terminal
+    mkvirtualenv genacls-fedmsg
+    python setup.py develop
+    fedmsg-hub
+
+You can tweak the settings in the ``fedmsg.d/`` directory.
