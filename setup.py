@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='genacls_consumer',
+    name='fedmsg_genacls',
     version='0.0.1',
     description='',
     author='',
@@ -11,6 +11,6 @@ setup(
     packages=[],
     entry_points="""
     [moksha.consumer]
-    genacls_consumer = genacls_consumer:GenACLsConsumer
+    fedmsg_genacls = fedmsg_genacls:GenACLsConsumer
     """,
 )
