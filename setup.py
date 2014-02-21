@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='kojiconsumer',
+    name='genacls_consumer',
     version='0.0.1',
     description='',
     author='',
@@ -11,6 +11,6 @@ setup(
     packages=[],
     entry_points="""
     [moksha.consumer]
-    kojiconsumer = kojiconsumer:KojiConsumer
+    genacls_consumer = genacls_consumer:GenACLsConsumer
     """,
 )

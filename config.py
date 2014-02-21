@@ -1,1 +1,0 @@
-config = dict(kojiconsumer=True)
