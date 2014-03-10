@@ -1,24 +1,26 @@
-# An fedmsg consumer that listens to pkgdb messages and update gitosis acls
+# -*- coding: utf-8 -*-
+""" A fedmsg consumer that listens to pkgdb messages to update gitosis acls
 
-import fedmsg.consumers
+Authors:    Janez Nemanič <janez.nemanic@gmail.com>
+            Ralph Bean <rbean@redhat.com>
 
-import pprint
-
-from moksha.hub.reactor import reactor
+"""
 
 import json
 import httplib
+import pprint
 import subprocess
+
+import fedmsg.consumers
+import moksha.hub.reactor
 
 
 class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
 
     # Really, we want to use this specific topic to listen to.
-    #topic = 'org.fedoraproject.prod.pkgdb.acl.update'
+    topic = 'org.fedoraproject.prod.pkgdb.acl.update'
     # But for testing, we'll just listen to all topics with this:
     #topic = '*'
-
-    topic = 'org.fedoraproject.prod.pkgdb.acl.update'
 
     config_key = 'genacls.consumer.enabled'
 
@@ -48,7 +50,7 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
 
         self.queued_messages.append(msg)
 
-        reactor.callLater(self.delay, delayed_consume)
+        moksha.hub.reactor.reactor.callLater(self.delay, delayed_consume)
 
     def action(self, messages):
         self.log.info("Acting on %r" % pprint.pformat(messages))
