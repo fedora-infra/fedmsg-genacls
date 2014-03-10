@@ -6,8 +6,6 @@ Authors:    Janez Nemanič <janez.nemanic@gmail.com>
 
 """
 
-import json
-import httplib
 import pprint
 import subprocess
 
@@ -53,40 +51,12 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         moksha.hub.reactor.reactor.callLater(self.delay, delayed_consume)
 
     def action(self, messages):
-        self.log.info("Acting on %r" % pprint.pformat(messages))
-        username = None
-        for message in messages:
-            msg = message['msg']
+        self.log.debug("Acting on %r" % pprint.pformat(messages))
 
-            if msg['status'] == 'Awaiting Review':
-                continue
+        command = '/usr/local/bin/genacls.sh'
+        return_code = subprocess.call(command)
 
-            # if username in message is different from the one in previous
-            # message query the pkgdb for username's acls, else use the old
-            # acls
-            if msg['username'] != username:
-                username = msg['username']
-                connection = httplib.HTTPConnection("209.132.184.188")
-                getquery = '/api/packager/acl/{0}'.format(username)
-                connection.request("GET", getquery)
-                response = connection.getresponse().read()
-                useracls = json.loads(response)
-
-            # check if collection{branchname,name,version}, package{name}, acl,
-            # status, username... match in pkgdb and fedmsg message, if there
-            # is a match run genacls script
-            for packageacl in useracls['acls']:
-                if (
-                    msg['package_listing']['package']['name'] == packageacl['packagelist']['package']['name'] and
-                    msg['acl'] == packageacl['acl'] and
-                    msg['package_listing']['collection']['branchname'] == packageacl['packagelist']['collection']['branchname'] and
-                    msg['package_listing']['collection']['name'] == packageacl['packagelist']['collection']['name'] and
-                    msg['package_listing']['collection']['version'] == packageacl['packagelist']['collection']['version'] and
-                    msg['username'] == packageacl['fas_name']
-                ):
-
-                    subprocess.call('/usr/local/bin/genacls.sh')
-                    self.queued_messages = []
-                    return
-                    #genacls will update all acls so
-                    #clean messages queue and return
+        if return_code == 0:
+            self.log.info("%r successful" % command)
+        else:
+            self.log.error("%r exited with %r" % (command, return_code))
