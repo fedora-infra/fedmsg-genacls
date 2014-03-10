@@ -10,13 +10,14 @@ import json
 import httplib
 import subprocess
 
+
 class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
 
     # Really, we want to use this specific topic to listen to.
     #topic = 'org.fedoraproject.prod.pkgdb.acl.update'
     # But for testing, we'll just listen to all topics with this:
     #topic = '*'
-    
+
     topic = 'org.fedoraproject.prod.pkgdb.acl.update'
 
     config_key = 'genacls.consumer.enabled'
@@ -45,7 +46,6 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
             else:
                 self.log.debug("Woke up, but there were no messages.")
 
-
         self.queued_messages.append(msg)
 
         reactor.callLater(self.delay, delayed_consume)
@@ -54,11 +54,14 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         self.log.info("Acting on %r" % pprint.pformat(messages))
         username = None
         for message in messages:
-            msg=message['msg']
-            if msg['status']=='Awaiting Review':
+            msg = message['msg']
+
+            if msg['status'] == 'Awaiting Review':
                 continue
-            # if username in message is different from the one in previous message
-            # query the pkgdb for username's acls, else use the old acls 
+
+            # if username in message is different from the one in previous
+            # message query the pkgdb for username's acls, else use the old
+            # acls
             if msg['username'] != username:
                 username = msg['username']
                 connection = httplib.HTTPConnection("209.132.184.188")
@@ -66,13 +69,22 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
                 connection.request("GET", getquery)
                 response = connection.getresponse().read()
                 useracls = json.loads(response)
-            #check if collection{branchname,name,version},package{name},acl,status,username
-            #match in pkgdb and fedmsg message, if there is a match run genacls script
+
+            # check if collection{branchname,name,version}, package{name}, acl,
+            # status, username... match in pkgdb and fedmsg message, if there
+            # is a match run genacls script
             for packageacl in useracls['acls']:
-                if msg['package_listing']['package']['name']==packageacl['packagelist']['package']['name'] and msg['acl']==packageacl['acl'] and msg['package_listing']['collection']['branchname']==packageacl['packagelist']['collection']['branchname'] and msg['package_listing']['collection']['name']==packageacl['packagelist']['collection']['name'] and msg['package_listing']['collection']['version']==packageacl['packagelist']['collection']['version'] and msg['username']==packageacl['fas_name']:
+                if (
+                    msg['package_listing']['package']['name'] == packageacl['packagelist']['package']['name'] and
+                    msg['acl'] == packageacl['acl'] and
+                    msg['package_listing']['collection']['branchname'] == packageacl['packagelist']['collection']['branchname'] and
+                    msg['package_listing']['collection']['name'] == packageacl['packagelist']['collection']['name'] and
+                    msg['package_listing']['collection']['version'] == packageacl['packagelist']['collection']['version'] and
+                    msg['username'] == packageacl['fas_name']
+                ):
+
                     subprocess.call('/usr/local/bin/genacls.sh')
                     self.queued_messages = []
                     return
                     #genacls will update all acls so
-                    #clean messages queue and return               
-
+                    #clean messages queue and return
