@@ -8,7 +8,7 @@ Authors:    Janez Nemanič <janez.nemanic@gmail.com>
 
 import pprint
 import subprocess
-
+import os
 import fedmsg.consumers
 import moksha.hub.reactor
 
@@ -53,8 +53,14 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     def action(self, messages):
         self.log.debug("Acting on %r" % pprint.pformat(messages))
 
+        def change_subprocess_id(user_UID,user_GID):
+            os.setuid(user_UID)        
+            os.setgid(user_GID)
+
         command = '/usr/local/bin/genacls.sh'
-        return_code = subprocess.call(command)
+        genacls_UID=
+        genacls_GID=
+        return_code = subprocess.Popen(args=command,preexec_fn=change_subprocess_id(genacls_UID,genacls_GID))
 
         if return_code == 0:
             self.log.info("%r successful" % command)
