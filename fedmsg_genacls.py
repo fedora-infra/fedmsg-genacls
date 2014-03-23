@@ -58,8 +58,8 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
             os.setgid(user_GID)
 
         command = '/usr/local/bin/genacls.sh'
-        genacls_UID=
-        genacls_GID=
+        genacls_UID = 417
+        genacls_GID = 417
         return_code = subprocess.Popen(args=command,preexec_fn=change_subprocess_id(genacls_UID,genacls_GID))
 
         if return_code == 0:
