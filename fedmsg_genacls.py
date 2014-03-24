@@ -53,14 +53,16 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     def action(self, messages):
         self.log.debug("Acting on %r" % pprint.pformat(messages))
 
-        def change_subprocess_id(user_UID,user_GID):
-            os.setuid(user_UID)        
-            os.setgid(user_GID)
-
         command = '/usr/local/bin/genacls.sh'
         genacls_UID = 417
         genacls_GID = 417
-        return_code = subprocess.Popen(args=command,preexec_fn=change_subprocess_id(genacls_UID,genacls_GID))
+
+        def change_subprocess_id():
+            os.setuid(user_UID)
+            os.setgid(user_GID)
+
+        return_code = subprocess.Popen(
+            args=command, preexec_fn=change_subprocess_id)
 
         if return_code == 0:
             self.log.info("%r successful" % command)
