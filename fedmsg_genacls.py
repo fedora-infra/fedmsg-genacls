@@ -53,6 +53,7 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     def action(self, messages):
         self.log.debug("Acting on %r" % pprint.pformat(messages))
 
+        # UID and GID of genacls.sh can be found in infrastructure puppet repo
         command = '/usr/local/bin/genacls.sh'
         genacls_UID = 417
         genacls_GID = 417
