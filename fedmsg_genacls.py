@@ -51,15 +51,18 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         moksha.hub.reactor.reactor.callLater(self.delay, delayed_consume)
 
     def action(self, messages):
-        self.log.debug("Acting on %r" % pprint.pformat(messages))
+        self.log.debug("Acting on %s" % pprint.pformat(messages))
 
+        # This script and the UID/GID are found in our puppet repo.
+        # The fedmsg user must be given passwordless sudo as the gen-acls user
+        # for this to work correctly.
         command = '/usr/local/bin/genacls.sh'
         genacls_UID = 417
         genacls_GID = 417
 
         def change_subprocess_id():
-            os.setuid(user_UID)
-            os.setgid(user_GID)
+            os.setuid(genacls_UID)
+            os.setgid(genacls_GID)
 
         return_code = subprocess.Popen(
             args=command, preexec_fn=change_subprocess_id)
