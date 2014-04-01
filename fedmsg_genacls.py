@@ -53,7 +53,7 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     def action(self, messages):
         self.log.debug("Acting on %s" % pprint.pformat(messages))
 
-        # This script and the UID/GID are found in our puppet repo.
+        # UID and GID of genacls.sh can be found in infrastructure puppet repo
         # The fedmsg user must be given passwordless sudo as the gen-acls user
         # for this to work correctly.
         command = '/usr/local/bin/genacls.sh'
