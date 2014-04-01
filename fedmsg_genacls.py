@@ -51,20 +51,16 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         moksha.hub.reactor.reactor.callLater(self.delay, delayed_consume)
 
     def action(self, messages):
-        self.log.debug("Acting on %r" % pprint.pformat(messages))
+        self.log.debug("Acting on %s" % pprint.pformat(messages))
 
-        command = '/usr/local/bin/genacls.sh'
-        genacls_UID = 417
-        genacls_GID = 417
+        command = '/usr/bin/sudo -u gen-acls /usr/local/bin/genacls.sh'.split()
 
-        def change_subprocess_id():
-            os.setuid(user_UID)
-            os.setgid(user_GID)
+        self.log.info("Running %r" % command)
+        process = subprocess.Popen(args=command)
+        stdout, stderr = process.communicate()
 
-        return_code = subprocess.Popen(
-            args=command, preexec_fn=change_subprocess_id)
-
-        if return_code == 0:
-            self.log.info("%r successful" % command)
+        if process.returncode == 0:
+            self.log.info("%r was successful" % command)
         else:
-            self.log.error("%r exited with %r" % (command, return_code))
+            self.log.error("%r exited with %r, stdout: %s, stderr: %s" % (
+                command, process.returncode, stdout, stderr))
