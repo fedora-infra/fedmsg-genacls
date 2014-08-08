@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.3
+---
+
+- Support for pkgdb teams. `cbf5f26d4 <https://github.com/fedora-infra/fedmsg-genacls/commit/cbf5f26d4a1860082d9e29524146298ad0b4e0db>`_
+- Merge pull request #4 from fedora-infra/feature/teams-support `ddf189bce <https://github.com/fedora-infra/fedmsg-genacls/commit/ddf189bce0752b5a79fc03503c0c65249f49aa4e>`_
+
 0.2
 ---
 
