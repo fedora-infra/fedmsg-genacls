@@ -15,10 +15,15 @@ import moksha.hub.reactor
 
 class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
 
-    # Really, we want to use this specific topic to listen to.
-    topic = 'org.fedoraproject.prod.pkgdb.acl.update'
-    # But for testing, we'll just listen to all topics with this:
-    #topic = '*'
+    # Because we are interested in a variety of topics, we tell moksha that
+    # we're interested in all of them (it doesn't know how to do complicated
+    # distinctions).  But then we'll filter later in our consume() method.
+    topic = '*'
+    interesting_topics = [
+        'org.fedoraproject.prod.pkgdb.acl.update',
+        'org.fedoraproject.prod.fas.group.member.sponsor',
+        'org.fedoraproject.prod.fas.group.member.remove',
+    ]
 
     config_key = 'genacls.consumer.enabled'
 
@@ -33,6 +38,9 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         self.queued_messages = []
 
     def consume(self, msg):
+        if msg['topic'] not in self.interesting_topics:
+            return
+
         msg = msg['body']
         self.log.info("Got a message %r" % msg['topic'])
 
