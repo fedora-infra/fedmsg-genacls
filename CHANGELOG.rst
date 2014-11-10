@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.4
+---
+
+- Trigger runs for other pkgdb events. `b66a22c82 <https://github.com/fedora-infra/fedmsg-genacls/commit/b66a22c82d768b79d8712b67674182aafef85d71>`_
+- Merge pull request #5 from fedora-infra/feature/run-after-new-pkg `8c4e5c63e <https://github.com/fedora-infra/fedmsg-genacls/commit/8c4e5c63e3eb3238ab854bb93e257a40ff054808>`_
+
 0.3
 ---
 
