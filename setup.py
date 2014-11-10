@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='fedmsg_genacls',
-    version='0.3',
+    version='0.4',
     description='A fedmsg consumer that sets gitosis acls in response to pkgdb messages',
     license="LGPLv2+",
     author='Janez Nemanič and Ralph Bean',
