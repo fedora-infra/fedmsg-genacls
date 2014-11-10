@@ -21,8 +21,14 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     topic = '*'
     interesting_topics = [
         'org.fedoraproject.prod.pkgdb.acl.update',
+        'org.fedoraproject.prod.pkgdb.acl.delete',
         'org.fedoraproject.prod.fas.group.member.sponsor',
         'org.fedoraproject.prod.fas.group.member.remove',
+        'org.fedoraproject.prod.pkgdb.package.new',
+        'org.fedoraproject.prod.pkgdb.package.delete',
+        'org.fedoraproject.prod.pkgdb.package.branch.new',
+        'org.fedoraproject.prod.pkgdb.package.branch.delete',
+        'org.fedoraproject.prod.pkgdb.owner.update',
     ]
 
     config_key = 'genacls.consumer.enabled'
