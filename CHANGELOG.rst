@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.5
+---
+
+- genacls.sh needs to be run as root `46ead6612 <https://github.com/fedora-infra/fedmsg-genacls/commit/46ead6612c6d957fa3034658b4897ffca8fea444>`_
+- Use \ in front of the command to avoid any kind of aliases `352becd4d <https://github.com/fedora-infra/fedmsg-genacls/commit/352becd4d3bd0ee7f41dafbed2683d83a6b78418>`_
+- Revert "Use \ in front of the command to avoid any kind of aliases" `9bfa137f7 <https://github.com/fedora-infra/fedmsg-genacls/commit/9bfa137f76855ffce0f4cb3db1b5a2abf3e61179>`_
+- Merge pull request #6 from fedora-infra/run_root `f6bc7ab38 <https://github.com/fedora-infra/fedmsg-genacls/commit/f6bc7ab3871820cea7336e43e9b69f9dcd70f606>`_
+- Staging too! `ab3bee385 <https://github.com/fedora-infra/fedmsg-genacls/commit/ab3bee3859fd907bbc8c09e9888dced1a4f5b947>`_
+- Merge pull request #7 from fedora-infra/feature/stg-too `42d4d09bc <https://github.com/fedora-infra/fedmsg-genacls/commit/42d4d09bc81fe8119376e9c7bf7974441ebfb3e9>`_
+
 0.4
 ---
 
