@@ -61,7 +61,7 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
     def action(self, messages):
         self.log.debug("Acting on %s" % pprint.pformat(messages))
 
-        command = '/usr/bin/sudo -u root /usr/local/bin/genacls.sh'.split()
+        command = '\/usr/bin/sudo -u root \/usr/local/bin/genacls.sh'.split()
 
         self.log.info("Running %r" % command)
         process = subprocess.Popen(args=command)
