@@ -29,6 +29,16 @@ class GenACLsConsumer(fedmsg.consumers.FedmsgConsumer):
         'org.fedoraproject.prod.pkgdb.package.branch.new',
         'org.fedoraproject.prod.pkgdb.package.branch.delete',
         'org.fedoraproject.prod.pkgdb.owner.update',
+
+        'org.fedoraproject.stg.pkgdb.acl.update',
+        'org.fedoraproject.stg.pkgdb.acl.delete',
+        'org.fedoraproject.stg.fas.group.member.sponsor',
+        'org.fedoraproject.stg.fas.group.member.remove',
+        'org.fedoraproject.stg.pkgdb.package.new',
+        'org.fedoraproject.stg.pkgdb.package.delete',
+        'org.fedoraproject.stg.pkgdb.package.branch.new',
+        'org.fedoraproject.stg.pkgdb.package.branch.delete',
+        'org.fedoraproject.stg.pkgdb.owner.update',
     ]
 
     config_key = 'genacls.consumer.enabled'
