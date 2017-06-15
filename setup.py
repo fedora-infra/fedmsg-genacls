@@ -9,11 +9,16 @@ setup(
     author='Janez Nemanič and Ralph Bean',
     author_email='admin@fedoraproject.org',
     url='https://github.com/fedora-infra/fedmsg-genacls',
-    install_requires=["fedmsg"],
+    install_requires=[
+        "fedmsg",
+        "python-fedora",
+        "arrow",
+    ],
     packages=[],
     py_modules=['fedmsg_genacls'],
     entry_points="""
     [moksha.consumer]
     fedmsg_genacls = fedmsg_genacls:GenACLsConsumer
+    fedmsg_gitoliteprefix = fedmsg_genacls:GitolitePrefixConsumer
     """,
 )
