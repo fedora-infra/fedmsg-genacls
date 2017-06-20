@@ -34,13 +34,15 @@ class GitolitePrefixConsumer(fedmsg.consumers.FedmsgConsumer):
     """ This is the new-world consumer that handles things for
     pagure-over-dist-git.
     """
-    topic = '*'
-    interesting_topics = [
+    topic = [
         'org.fedoraproject.prod.fas.group.member.sponsor',
         'org.fedoraproject.prod.fas.group.member.remove',
 
         'org.fedoraproject.stg.fas.group.member.sponsor',
         'org.fedoraproject.stg.fas.group.member.remove',
+
+        'org.fedoraproject.dev.fas.group.member.sponsor',
+        'org.fedoraproject.dev.fas.group.member.remove',
     ]
     interesting_groups = dict(
         admins='releng-team',
@@ -55,7 +57,7 @@ class GitolitePrefixConsumer(fedmsg.consumers.FedmsgConsumer):
         super(GitolitePrefixConsumer, self).__init__(hub)
 
         # This is required.  It is the number of seconds that we should wait
-        # until we ultimately act on a pkgdb message.
+        # until we ultimately act on a FAS message.
         self.delay = self.hub.config['gitoliteprefix.consumer.delay']
         # Also required.  This is the location we write our file to.
         self.filename = self.hub.config['gitoliteprefix.consumer.filename']
@@ -77,9 +79,6 @@ class GitolitePrefixConsumer(fedmsg.consumers.FedmsgConsumer):
             self.log.warn("%s last modified %s" % (self.filename, ago))
 
     def consume(self, msg):
-        if msg['topic'] not in self.interesting_topics:
-            return
-
         msg = msg['body']
 
         if msg['msg']['group'] not in self.interesting_groups.values():
