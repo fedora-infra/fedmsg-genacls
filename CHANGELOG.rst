@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.6
+---
+
+- Add a new fedmsg consumer for the new world where pagure is used as a
+  front-end for dist-git `PR#8 <https://github.com/fedora-infra/fedmsg-genacls/pull/8>`_
+
 0.5
 ---
 
